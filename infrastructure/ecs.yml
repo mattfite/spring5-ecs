@@ -34,6 +34,10 @@ Parameters:
   AdminEmail:
     Description: 'The email address of the admin who receives alerts.'
     Type: String
+  Port:
+    Description: 'incoming web traffic'
+    Type: Number
+    Default: 80
 Resources:
   # A SNS topic is used to send alerts via Email to the value of the AdminEmail parameter 
   Alerts:
@@ -61,8 +65,8 @@ Resources:
         'Fn::ImportValue': !Sub '${ParentVPCStack}-VPC'
       SecurityGroupIngress:
       - CidrIp: '0.0.0.0/0'
-        FromPort: 80
-        ToPort: 80
+        FromPort: !Ref Port
+        ToPort: !Ref Port
         IpProtocol: tcp
   # The load balancer needs to run in public subnets because our users should be able to access the app from the Internet.
   LoadBalancer:
@@ -119,7 +123,7 @@ Resources:
       HealthyThresholdCount: 2
       Matcher:
         HttpCode: '200'
-      Port: 80
+      Port: !Ref Port
       Protocol: HTTP
       UnhealthyThresholdCount: 4
       VpcId:
@@ -135,7 +139,7 @@ Resources:
       - TargetGroupArn: !Ref DefaultTargetGroup
         Type: forward
       LoadBalancerArn: !Ref LoadBalancer
-      Port: 80
+      Port: !Ref Port
       Protocol: HTTP
   TaskDefinition:
     Type: 'AWS::ECS::TaskDefinition'
