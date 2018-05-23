@@ -208,7 +208,7 @@ Resources:
             build:
               commands:
               #- 'cd app/ && npm install'
-              - 'cd app/ && gradle wrapper --gradle-version 4.1'
+              - 'cd app/ && gradle wrapper --gradle-version 4.3'
               #- 'cd app/ && npm test'
               - 'cd app/ && ./gradlew clean shadowJar'
             post_build:
