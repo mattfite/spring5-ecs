@@ -149,7 +149,7 @@ Resources:
       ContainerDefinitions:
       - Name: main # if you change this, you also must change the AWS::ECS::Service
         Image: !Ref Image
-        Memory: 128
+        Memory: 512
         PortMappings:
         - ContainerPort: 3000 # if you change this, you also must change the AWS::ECS::Service
           Protocol: tcp
