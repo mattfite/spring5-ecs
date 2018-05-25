@@ -1,15 +1,10 @@
 FROM java:8
 
-#RUN yum -y update
-#RUN curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -
-#RUN yum -y install nodejs
-
 RUN mkdir -p /usr/src/app
 ADD app /usr/src/app
 
 WORKDIR /usr/src/app
-RUN pwd && ls && ls /usr/src/app && find /usr/src/app
 
 EXPOSE 3000
 
-CMD ["java", "-jar", "app/build/libs/spring5-app-1.0-SNAPSHOT-all.jar"]
+CMD ["java", "-jar", "build/libs/app-1.0-SNAPSHOT-all.jar"]
