@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Main {
-    private static final int PORT = 8080;
+    private static final int PORT = 3000;
 
     public static void main(String[] args) throws Exception {
         String appBase = ".";
