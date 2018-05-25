@@ -282,6 +282,9 @@ Resources:
               - 'eval $(aws ecr get-login --no-include-email) && docker push ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ArtifactsRepository}:${!CODEBUILD_BUILD_ID#*:}'
               - 'echo "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ArtifactsRepository}:${!CODEBUILD_BUILD_ID#*:}" > infrastructure/image.txt'
               - 'echo "{\"image\": \"${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ArtifactsRepository}:${!CODEBUILD_BUILD_ID#*:}\"}" > infrastructure/image.json'
+              - 'cat infrastructure/image.txt'
+              - 'cat infrastructure/image.json'
+              - 'ls app/build/libs'
           artifacts:
             files:
             - 'infrastructure/image.json'
@@ -393,36 +396,36 @@ Resources:
           OutputArtifacts:
           - Name: Image
           RunOrder: 2
-      - Name: Acceptance
-        Actions:
-        - Name: Deploy
-          ActionTypeId:
-            Category: Deploy
-            Owner: AWS
-            Provider: CloudFormation
-            Version: 1
-          Configuration:
-            ActionMode: CREATE_UPDATE
-            Capabilities: CAPABILITY_IAM
-            RoleArn: !GetAtt 'CloudFormationRole.Arn'
-            StackName: !Sub '${AWS::StackName}-acceptance'
-            TemplatePath: 'Source::infrastructure/ecs.yml'
-            TemplateConfiguration: 'Source::infrastructure/ecs.json'
-          InputArtifacts:
-          - Name: Source
-          - Name: Image
-          RunOrder: 1
-        - Name: Test
-          ActionTypeId:
-            Category: Build
-            Owner: AWS
-            Provider: CodeBuild
-            Version: 1
-          Configuration:
-            ProjectName: !Ref RunAcceptanceProject
-          InputArtifacts:
-          - Name: Acceptance
-          RunOrder: 2
+#      - Name: Acceptance
+#        Actions:
+#        - Name: Deploy
+#          ActionTypeId:
+#            Category: Deploy
+#            Owner: AWS
+#            Provider: CloudFormation
+#            Version: 1
+#          Configuration:
+#            ActionMode: CREATE_UPDATE
+#            Capabilities: CAPABILITY_IAM
+#            RoleArn: !GetAtt 'CloudFormationRole.Arn'
+#            StackName: !Sub '${AWS::StackName}-acceptance'
+#            TemplatePath: 'Source::infrastructure/ecs.yml'
+#            TemplateConfiguration: 'Source::infrastructure/ecs.json'
+#          InputArtifacts:
+#          - Name: Source
+#          - Name: Image
+#          RunOrder: 1
+#        - Name: Test
+#          ActionTypeId:
+#            Category: Build
+#            Owner: AWS
+#            Provider: CodeBuild
+#            Version: 1
+#          Configuration:
+#            ProjectName: !Ref RunAcceptanceProject
+#          InputArtifacts:
+#          - Name: Acceptance
+#          RunOrder: 2
       - Name: Production
         Actions:
         - Name: Deploy
